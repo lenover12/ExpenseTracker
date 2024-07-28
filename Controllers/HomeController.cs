@@ -8,9 +8,12 @@ namespace ExpenseTracker.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ExpenseTrackerDbContext _context;
+
+        public HomeController(ILogger<HomeController> logger, ExpenseTrackerDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -30,6 +33,11 @@ namespace ExpenseTracker.Controllers
 
         public IActionResult CreateEditExpenseForm(Expense model)
         {
+
+            _context.Expenses.Add(model);
+
+            _context.SaveChanges();
+
             return RedirectToAction("Expenses");
         }
 
